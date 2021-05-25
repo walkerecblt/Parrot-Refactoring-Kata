@@ -4,6 +4,8 @@ export const PARROT_TYPES = {
     NORWEGIAN_BLUE: 'NORWEGIAN_BLUE',
 };
 
+const LOAD_FACTOR = 9;
+
 export class Parrot {
     constructor(type, numberOfCoconuts, voltage, isNailed) {
         this.type = type;
@@ -41,4 +43,6 @@ class ParrotFactory {
     hatchEuropean() {
         return new Parrot(PARROT_TYPES.EUROPEAN);
     }
+
+
 }
