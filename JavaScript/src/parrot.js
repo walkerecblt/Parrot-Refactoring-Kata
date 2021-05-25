@@ -38,5 +38,7 @@ export class Parrot {
 }
 
 class ParrotFactory {
-
+    hatchEuropean() {
+        return new Parrot(PARROT_TYPES.EUROPEAN);
+    }
 }
