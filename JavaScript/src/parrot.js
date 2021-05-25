@@ -50,3 +50,9 @@ export class ParrotFactory {
         return new Parrot(PARROT_TYPES.NORWEGIAN_BLUE, 0, voltage, isNailed);
     }
 }
+
+class EuropeanParrot {
+    getSpeed() {
+
+    }
+}
