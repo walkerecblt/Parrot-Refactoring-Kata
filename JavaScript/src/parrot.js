@@ -43,6 +43,10 @@ export class ParrotFactory {
     hatchEuropean() {
         return new Parrot(PARROT_TYPES.EUROPEAN, 0, 0, false);
     }
-    hatchAfrican()
-
+    hatchAfrican(numberOfCoconuts) {
+       return new Parrot(PARROT_TYPES.AFRICAN, numberOfCoconuts, 0, false);
+    }
+    hatchNorwegianBlue(voltage, isNailed) {
+        return new Parrot(PARROT_TYPES.NORWEGIAN_BLUE, 0, voltage, isNailed);
+    }
 }

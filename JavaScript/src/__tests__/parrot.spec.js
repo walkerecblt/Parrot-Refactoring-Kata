@@ -7,7 +7,7 @@ describe("Parrot", function () {
     });
 
     test("get speed of african parrot with one coconut", function () {
-        const parrot = new Parrot(PARROT_TYPES.AFRICAN, 1, 0, false);
+        const parrot = new ParrotFactory().hatchAfrican(1);
 
         expect(parrot.getSpeed()).toBe(3);
     });
@@ -25,7 +25,7 @@ describe("Parrot", function () {
     });
 
     test("get speed norwegian blue parrot nailed", function () {
-        const parrot = new Parrot(PARROT_TYPES.NORWEGIAN_BLUE, 0, 1.5, true);
+        const parrot = new ParrotFactory().hatchNorwegianBlue(1.5, true);
 
         expect(parrot.getSpeed()).toBe(0);
     });
