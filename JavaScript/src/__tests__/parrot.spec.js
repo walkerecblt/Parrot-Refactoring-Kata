@@ -1,9 +1,8 @@
-import { Parrot, PARROT_TYPES } from '../parrot';
+import {Parrot, PARROT_TYPES, ParrotFactory} from '../parrot';
 
 describe("Parrot", function () {
     test("get speed of european parrot", function () {
-        const parrot = new Parrot(PARROT_TYPES.EUROPEAN, 0, 0, false);
-
+        const parrot = new ParrotFactory().hatchEuropean();
         expect(parrot.getSpeed()).toBe(12);
     });
 

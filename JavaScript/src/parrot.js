@@ -39,10 +39,10 @@ export class Parrot {
     }
 }
 
-class ParrotFactory {
+export class ParrotFactory {
     hatchEuropean() {
-        return new Parrot(PARROT_TYPES.EUROPEAN);
+        return new Parrot(PARROT_TYPES.EUROPEAN, 0, 0, false);
     }
-
+    hatchAfrican()
 
 }
