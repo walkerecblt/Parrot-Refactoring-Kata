@@ -36,3 +36,7 @@ export class Parrot {
         return 12;
     }
 }
+
+class ParrotFactory {
+
+}
