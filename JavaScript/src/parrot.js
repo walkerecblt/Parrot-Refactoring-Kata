@@ -6,6 +6,12 @@ export const PARROT_TYPES = {
 
 export class Parrot {
     constructor(type, numberOfCoconuts, voltage, isNailed) {
+        this.speedStrategy = undefined;
+        if(type === PARROT_TYPES.EUROPEAN) {
+            this.speedStrategy = function() {
+                return this.getBaseSpeed();
+            }
+        }
         this.type = type;
         this.numberOfCoconuts = numberOfCoconuts;
         this.voltage = voltage;
@@ -13,13 +19,18 @@ export class Parrot {
     }
 
     getSpeed() {
-        switch (this.type) {
-            case PARROT_TYPES.EUROPEAN:
-                return this.getBaseSpeed();
-            case PARROT_TYPES.AFRICAN:
-                return Math.max(0, this.getBaseSpeed() - this.getLoadFactor() * this.numberOfCoconuts);
-            case PARROT_TYPES.NORWEGIAN_BLUE:
-                return (this.isNailed) ? 0 : this.getBaseSpeedWithVoltage(this.voltage);
+        if(this.speedStrategy) {
+            return this.speedStrategy();
+        }
+        if(!this.speedStrategy) {
+            switch (this.type) {
+                case PARROT_TYPES.EUROPEAN:
+                    return this.getBaseSpeed();
+                case PARROT_TYPES.AFRICAN:
+                    return Math.max(0, this.getBaseSpeed() - this.getLoadFactor() * this.numberOfCoconuts);
+                case PARROT_TYPES.NORWEGIAN_BLUE:
+                    return (this.isNailed) ? 0 : this.getBaseSpeedWithVoltage(this.voltage);
+            }
         }
         throw new Error("Should be unreachable");
     }
