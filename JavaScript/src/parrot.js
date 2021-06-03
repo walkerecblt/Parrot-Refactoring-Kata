@@ -10,7 +10,17 @@ export class Parrot {
         if(type === PARROT_TYPES.EUROPEAN) {
             this.speedStrategy = function() {
                 return this.getBaseSpeed();
-            }
+            };
+        }
+        if(type === PARROT_TYPES.AFRICAN) {
+            this.speedStrategy = function() {
+                return Math.max(0, this.getBaseSpeed() - this.getLoadFactor() * this.numberOfCoconuts);
+            };
+        }
+        if(type === PARROT_TYPES.NORWEGIAN_BLUE) {
+            this.speedStrategy = function () {
+                return (this.isNailed) ? 0 : this.getBaseSpeedWithVoltage(this.voltage);
+            };
         }
         this.type = type;
         this.numberOfCoconuts = numberOfCoconuts;
@@ -19,20 +29,7 @@ export class Parrot {
     }
 
     getSpeed() {
-        if(this.speedStrategy) {
-            return this.speedStrategy();
-        }
-        if(!this.speedStrategy) {
-            switch (this.type) {
-                case PARROT_TYPES.EUROPEAN:
-                    return this.getBaseSpeed();
-                case PARROT_TYPES.AFRICAN:
-                    return Math.max(0, this.getBaseSpeed() - this.getLoadFactor() * this.numberOfCoconuts);
-                case PARROT_TYPES.NORWEGIAN_BLUE:
-                    return (this.isNailed) ? 0 : this.getBaseSpeedWithVoltage(this.voltage);
-            }
-        }
-        throw new Error("Should be unreachable");
+        return this.speedStrategy();
     }
 
     getBaseSpeedWithVoltage(voltage) {
