@@ -4,6 +4,31 @@ export const PARROT_TYPES = {
     NORWEGIAN_BLUE: 'NORWEGIAN_BLUE',
 };
 
+class SpeedStrategyFactory {
+    getStrategy(type) {
+        switch(type) {
+            case PARROT_TYPES.AFRICAN:
+                return function() {
+                    return Math.max(0, this.getBaseSpeed() - this.getLoadFactor() * this.numberOfCoconuts);
+                };
+            case PARROT_TYPES.EUROPEAN:
+                return function() {
+                    return this.getBaseSpeed();
+                };
+        }
+        if(type === PARROT_TYPES.EUROPEAN) {
+            return function() {
+            };
+        }
+        if(type === PARROT_TYPES.AFRICAN) {
+        }
+        if(type === PARROT_TYPES.NORWEGIAN_BLUE) {
+            return function () {
+                return (this.isNailed) ? 0 : this.getBaseSpeedWithVoltage(this.voltage);
+            };
+        }
+    } 
+}
 export class Parrot {
     constructor(type, numberOfCoconuts, voltage, isNailed) {
         this.speedStrategy = undefined;
