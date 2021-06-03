@@ -5,7 +5,7 @@ export const PARROT_TYPES = {
 };
 
 class SpeedStrategyFactory {
-    getStrategy(type) {
+    static getStrategy(type) {
         switch(type) {
             case PARROT_TYPES.AFRICAN:
                 return function() {
@@ -26,7 +26,7 @@ class SpeedStrategyFactory {
 }
 export class Parrot {
     constructor(type, numberOfCoconuts, voltage, isNailed) {
-        this.speedStrategy = new SpeedStrategyFactory().getStrategy(type);
+        this.speedStrategy = SpeedStrategyFactory.getStrategy(type);
         this.numberOfCoconuts = numberOfCoconuts;
         this.voltage = voltage;
         this.isNailed = isNailed;
