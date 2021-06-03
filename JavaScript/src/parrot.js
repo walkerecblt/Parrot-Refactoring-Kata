@@ -15,23 +15,18 @@ class SpeedStrategyFactory {
                 return function() {
                     return this.getBaseSpeed();
                 };
-        }
-        if(type === PARROT_TYPES.EUROPEAN) {
-            return function() {
-            };
-        }
-        if(type === PARROT_TYPES.AFRICAN) {
-        }
-        if(type === PARROT_TYPES.NORWEGIAN_BLUE) {
-            return function () {
-                return (this.isNailed) ? 0 : this.getBaseSpeedWithVoltage(this.voltage);
-            };
+            case PARROT_TYPES.NORWEGIAN_BLUE:
+                return function(){
+                    return (this.isNailed) ? 0 : this.getBaseSpeedWithVoltage(this.voltage);
+                };
+            default:
+                throw new Error("you've done goofed");
         }
     } 
 }
 export class Parrot {
     constructor(type, numberOfCoconuts, voltage, isNailed) {
-        this.speedStrategy = undefined;
+        this.speedStrategy = new SpeedStrategyFactory().getStrategy(type);
         if(type === PARROT_TYPES.EUROPEAN) {
             this.speedStrategy = function() {
                 return this.getBaseSpeed();
