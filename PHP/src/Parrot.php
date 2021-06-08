@@ -76,3 +76,18 @@ class Parrot
         return 12.0;
     }
 }
+
+interface SpeedStrategy {
+    function getSpeed(): float;
+}
+
+class EuropeanSpeedStrategy implements SpeedStrategy {
+    $parrot;
+    public function __construct($parrot) {
+        $this->parrot = $parrot;
+    }
+    public function getSpeed(): float
+    {
+
+    }
+}
