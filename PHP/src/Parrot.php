@@ -8,24 +8,16 @@ use Exception;
 
 class Parrot
 {
-    /**
-     * @var int ParrotTypeEnum
-     */
+    /** @var int ParrotTypeEnum */
     private $type;
 
-    /**
-     * @var int
-     */
+    /** @var int */
     private $numberOfCoconuts;
 
-    /**
-     * @var float
-     */
+    /** @var float */
     private $voltage;
 
-    /**
-     * @var bool
-     */
+    /** @var bool */
     private $isNailed;
 
     private $strategy;
@@ -48,6 +40,10 @@ class Parrot
                     return $this->isNailed ? 0 : $this->getBaseSpeedWith($this->voltage);
                 };
                 break;
+            default:
+                $this->strategy = function() {
+                    throw new Exception('Should be unreachable');
+                };
         }
     }
 
@@ -63,15 +59,6 @@ class Parrot
     public function getSpeed(): float
     {
         return call_user_func($this->strategy);
-        switch ($this->type) {
-            case ParrotTypeEnum::EUROPEAN:
-                return $this->getBaseSpeed();
-            case ParrotTypeEnum::AFRICAN:
-                return max(0, $this->getBaseSpeed() - $this->getLoadFactor() * $this->numberOfCoconuts);
-            case ParrotTypeEnum::NORWEGIAN_BLUE:
-                return $this->isNailed ? 0 : $this->getBaseSpeedWith($this->voltage);
-        }
-        throw new Exception('Should be unreachable');
     }
 
     private function getBaseSpeedWith(float $voltage): float
