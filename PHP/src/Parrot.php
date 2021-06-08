@@ -34,12 +34,20 @@ class Parrot
     {
         switch ($this->type) {
             case ParrotTypeEnum::EUROPEAN:
-                $strategy = function() { return $this->getBaseSpeed(); };
+                $this->strategy = function () {
+                    return $this->getBaseSpeed();
+                };
                 break;
             case ParrotTypeEnum::AFRICAN:
-                return max(0, $this->getBaseSpeed() - $this->getLoadFactor() * $this->numberOfCoconuts);
+                $this->strategy = function () {
+                    return max(0, $this->getBaseSpeed() - $this->getLoadFactor() * $this->numberOfCoconuts);
+                };
+                break;
             case ParrotTypeEnum::NORWEGIAN_BLUE:
-                return $this->isNailed ? 0 : $this->getBaseSpeedWith($this->voltage);
+                $this->strategy = function () {
+                    return $this->isNailed ? 0 : $this->getBaseSpeedWith($this->voltage);
+                };
+                break;
         }
     }
 
