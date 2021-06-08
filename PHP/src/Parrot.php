@@ -82,7 +82,10 @@ interface SpeedStrategy {
 }
 
 class EuropeanSpeedStrategy implements SpeedStrategy {
-    $parrot;
+
+    /** @var Parrot */
+    private $parrot;
+
     public function __construct($parrot) {
         $this->parrot = $parrot;
     }
