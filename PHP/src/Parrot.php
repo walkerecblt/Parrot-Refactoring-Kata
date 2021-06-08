@@ -28,6 +28,21 @@ class Parrot
      */
     private $isNailed;
 
+    private $strategy;
+
+    private function setGetSpeedStrategy(int $type)
+    {
+        switch ($this->type) {
+            case ParrotTypeEnum::EUROPEAN:
+                $strategy = function() { return $this->getBaseSpeed(); };
+                break;
+            case ParrotTypeEnum::AFRICAN:
+                return max(0, $this->getBaseSpeed() - $this->getLoadFactor() * $this->numberOfCoconuts);
+            case ParrotTypeEnum::NORWEGIAN_BLUE:
+                return $this->isNailed ? 0 : $this->getBaseSpeedWith($this->voltage);
+        }
+    }
+
     public function __construct(int $type, int $numberOfCoconuts, float $voltage, bool $isNailed)
     {
         $this->type = $type;
