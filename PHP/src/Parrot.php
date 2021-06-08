@@ -57,10 +57,12 @@ class Parrot
         $this->numberOfCoconuts = $numberOfCoconuts;
         $this->voltage = $voltage;
         $this->isNailed = $isNailed;
+        $this->setGetSpeedStrategy($type);
     }
 
     public function getSpeed(): float
     {
+        return call_user_func($this->strategy);
         switch ($this->type) {
             case ParrotTypeEnum::EUROPEAN:
                 return $this->getBaseSpeed();
