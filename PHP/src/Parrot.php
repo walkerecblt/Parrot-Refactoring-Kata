@@ -8,9 +8,6 @@ use Exception;
 
 class Parrot
 {
-    /** @var int ParrotTypeEnum */
-    private $type;
-
     /** @var int */
     private $numberOfCoconuts;
 
@@ -29,7 +26,6 @@ class Parrot
 
     public function __construct(int $type, int $numberOfCoconuts, float $voltage, bool $isNailed)
     {
-        $this->type = $type;
         $this->numberOfCoconuts = $numberOfCoconuts;
         $this->voltage = $voltage;
         $this->isNailed = $isNailed;
@@ -109,7 +105,6 @@ class EuropeanSpeedStrategy extends BaseSpeedStrategy implements SpeedStrategy
 
 class UnknownSpeedStrategy implements  SpeedStrategy
 {
-
     public function getSpeed(int $numberOfCoconuts, float $voltage, bool $isNailed): float
     {
         throw new Exception('Should be unreachable');
