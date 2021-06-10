@@ -8,14 +8,10 @@ use Exception;
 
 class Parrot
 {
-    /**
-     * @var int ParrotTypeEnum
-     */
+    /** @var int ParrotTypeEnum */
     private $type;
 
-    /**
-     * @var int
-     */
+    /** @var int */
     private $numberOfCoconuts;
 
     /**
@@ -28,12 +24,16 @@ class Parrot
      */
     private $isNailed;
 
+    /** @var SpeedStrategy */
+    private $speedStrategy;
+
     public function __construct(int $type, int $numberOfCoconuts, float $voltage, bool $isNailed)
     {
         $this->type = $type;
         $this->numberOfCoconuts = $numberOfCoconuts;
         $this->voltage = $voltage;
         $this->isNailed = $isNailed;
+        $this->setStrategy($type);
     }
 
     public function getSpeed(): float
@@ -60,6 +60,27 @@ class Parrot
     }
 
     private function getBaseSpeed(): float
+    {
+        return 12.0;
+    }
+
+    private function setStrategy(int $type)
+    {
+        switch($type) {
+            case ParrotTypeEnum::EUROPEAN:
+                $this->speedStrategy = new EuropeanSpeedStrategy();
+        }
+    }
+}
+
+interface SpeedStrategy
+{
+    public function getSpeed(int $numberOfCoconuts, float $voltage, bool $isNailed): float;
+}
+
+class EuropeanSpeedStrategy implements SpeedStrategy
+{
+    public function getSpeed(int $numberOfCoconuts, float $voltage, bool $isNailed): float
     {
         return 12.0;
     }
