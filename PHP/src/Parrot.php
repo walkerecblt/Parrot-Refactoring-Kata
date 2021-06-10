@@ -42,9 +42,9 @@ class Parrot
             case ParrotTypeEnum::EUROPEAN:
                 return $this->speedStrategy->getSpeed($this->numberOfCoconuts, $this->voltage, $this->isNailed);
             case ParrotTypeEnum::AFRICAN:
-                return max(0, $this->getBaseSpeed() - $this->getLoadFactor() * $this->numberOfCoconuts);
+                return $this->speedStrategy->getSpeed($this->numberOfCoconuts, $this->voltage, $this->isNailed);
             case ParrotTypeEnum::NORWEGIAN_BLUE:
-                return $this->isNailed ? 0 : $this->getBaseSpeedWith($this->voltage);
+                return $this->speedStrategy->getSpeed($this->numberOfCoconuts, $this->voltage, $this->isNailed);
         }
         throw new Exception('Should be unreachable');
     }
@@ -73,6 +73,9 @@ class Parrot
             case ParrotTypeEnum::AFRICAN:
                 $this->speedStrategy = new AfricanSpeedStrategy();
                 break;
+            case ParrotTypeEnum::NORWEGIAN_BLUE:
+                $this->speedStrategy = new NorwegianBlueSpeedStrategy();
+                break;
         }
     }
 }
@@ -100,6 +103,19 @@ class AfricanSpeedStrategy implements SpeedStrategy
         return 12.0;
     }
 
+}
+
+class NorwegianBlueSpeedStrategy implements SpeedStrategy
+{
+    public function getSpeed(int $numberOfCoconuts, float $voltage, bool $isNailed): float
+    {
+        return $this->isNailed ? 0 : $this->getBaseSpeedWith($this->voltage);
+    }
+
+    private function getBaseSpeedWith(float $voltage): float
+    {
+        return min(24.0, $voltage * $this->getBaseSpeed());
+    }
 }
 
 class EuropeanSpeedStrategy implements SpeedStrategy
