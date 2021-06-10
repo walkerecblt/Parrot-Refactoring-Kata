@@ -29,7 +29,7 @@ class Parrot
         $this->numberOfCoconuts = $numberOfCoconuts;
         $this->voltage = $voltage;
         $this->isNailed = $isNailed;
-        $this->setStrategy($type);
+        $this->setStrategy($type, $numberOfCoconuts);
     }
 
     public function getSpeed(): float
@@ -37,14 +37,14 @@ class Parrot
         return $this->speedStrategy->getSpeed($this->numberOfCoconuts, $this->voltage, $this->isNailed);
     }
 
-    private function setStrategy(int $type)
+    private function setStrategy(int $type, int $numberOfCoconuts)
     {
         switch($type) {
             case ParrotTypeEnum::EUROPEAN:
                 $this->speedStrategy = new EuropeanSpeedStrategy();
                 break;
             case ParrotTypeEnum::AFRICAN:
-                $this->speedStrategy = new AfricanSpeedStrategy();
+                $this->speedStrategy = new AfricanSpeedStrategy($numberOfCoconuts);
                 break;
             case ParrotTypeEnum::NORWEGIAN_BLUE:
                 $this->speedStrategy = new NorwegianBlueSpeedStrategy();
@@ -71,9 +71,19 @@ abstract class BaseSpeedStrategy
 
 class AfricanSpeedStrategy extends BaseSpeedStrategy implements SpeedStrategy
 {
+    /**
+     * @var int
+     */
+    private $numberOfCoconuts;
+
+    public function __construct(int $numberOfCoconuts)
+    {
+        $this->numberOfCoconuts = $numberOfCoconuts;
+    }
+
     public function getSpeed(int $numberOfCoconuts, float $voltage, bool $isNailed): float
     {
-        return max(0, $this->getBaseSpeed() - $this->getLoadFactor() * $numberOfCoconuts);
+        return max(0, $this->getBaseSpeed() - $this->getLoadFactor() * $this->numberOfCoconuts);
     }
 
     private function getLoadFactor(): float
