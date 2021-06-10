@@ -42,7 +42,7 @@ class Parrot
             case ParrotTypeEnum::EUROPEAN:
                 return $this->speedStrategy->getSpeed($this->numberOfCoconuts, $this->voltage, $this->isNailed);
             case ParrotTypeEnum::AFRICAN:
-                `return max(0, $this->getBaseSpeed() - $this->getLoadFactor() * $this->numberOfCoconuts);`
+                return max(0, $this->getBaseSpeed() - $this->getLoadFactor() * $this->numberOfCoconuts);
             case ParrotTypeEnum::NORWEGIAN_BLUE:
                 return $this->isNailed ? 0 : $this->getBaseSpeedWith($this->voltage);
         }
@@ -80,6 +80,26 @@ class Parrot
 interface SpeedStrategy
 {
     public function getSpeed(int $numberOfCoconuts, float $voltage, bool $isNailed): float;
+}
+
+class AfricanSpeedStrategy implements SpeedStrategy
+{
+
+    public function getSpeed(int $numberOfCoconuts, float $voltage, bool $isNailed): float
+    {
+        return max(0, $this->getBaseSpeed() - $this->getLoadFactor() * $numberOfCoconuts);
+    }
+
+    private function getLoadFactor(): float
+    {
+        return 9.0;
+    }
+
+    private function getBaseSpeed(): float
+    {
+        return 12.0;
+    }
+
 }
 
 class EuropeanSpeedStrategy implements SpeedStrategy
