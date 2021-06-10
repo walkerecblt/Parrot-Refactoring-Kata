@@ -49,21 +49,6 @@ class Parrot
         throw new Exception('Should be unreachable');
     }
 
-    private function getBaseSpeedWith(float $voltage): float
-    {
-        return min(24.0, $voltage * $this->getBaseSpeed());
-    }
-
-    private function getLoadFactor(): float
-    {
-        return 9.0;
-    }
-
-    private function getBaseSpeed(): float
-    {
-        return 12.0;
-    }
-
     private function setStrategy(int $type)
     {
         switch($type) {
@@ -109,12 +94,16 @@ class NorwegianBlueSpeedStrategy implements SpeedStrategy
 {
     public function getSpeed(int $numberOfCoconuts, float $voltage, bool $isNailed): float
     {
-        return $this->isNailed ? 0 : $this->getBaseSpeedWith($this->voltage);
+        return $isNailed ? 0 : $this->getBaseSpeedWith($voltage);
     }
 
     private function getBaseSpeedWith(float $voltage): float
     {
         return min(24.0, $voltage * $this->getBaseSpeed());
+    }
+    private function getBaseSpeed(): float
+    {
+        return 12.0;
     }
 }
 
