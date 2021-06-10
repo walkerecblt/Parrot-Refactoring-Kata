@@ -38,15 +38,7 @@ class Parrot
 
     public function getSpeed(): float
     {
-        switch ($this->type) {
-            case ParrotTypeEnum::EUROPEAN:
-                return $this->speedStrategy->getSpeed($this->numberOfCoconuts, $this->voltage, $this->isNailed);
-            case ParrotTypeEnum::AFRICAN:
-                return $this->speedStrategy->getSpeed($this->numberOfCoconuts, $this->voltage, $this->isNailed);
-            case ParrotTypeEnum::NORWEGIAN_BLUE:
-                return $this->speedStrategy->getSpeed($this->numberOfCoconuts, $this->voltage, $this->isNailed);
-        }
-        throw new Exception('Should be unreachable');
+        return $this->speedStrategy->getSpeed($this->numberOfCoconuts, $this->voltage, $this->isNailed);
     }
 
     private function setStrategy(int $type)
@@ -61,6 +53,9 @@ class Parrot
             case ParrotTypeEnum::NORWEGIAN_BLUE:
                 $this->speedStrategy = new NorwegianBlueSpeedStrategy();
                 break;
+            default:
+                $this->speedStrategy = new UnknownSpeedStrategy();
+                break;
         }
     }
 }
@@ -70,9 +65,16 @@ interface SpeedStrategy
     public function getSpeed(int $numberOfCoconuts, float $voltage, bool $isNailed): float;
 }
 
-class AfricanSpeedStrategy implements SpeedStrategy
+abstract class BaseSpeedStrategy
 {
+    protected function getBaseSpeed(): float
+    {
+        return 12.0;
+    }
+}
 
+class AfricanSpeedStrategy extends BaseSpeedStrategy implements SpeedStrategy
+{
     public function getSpeed(int $numberOfCoconuts, float $voltage, bool $isNailed): float
     {
         return max(0, $this->getBaseSpeed() - $this->getLoadFactor() * $numberOfCoconuts);
@@ -82,15 +84,9 @@ class AfricanSpeedStrategy implements SpeedStrategy
     {
         return 9.0;
     }
-
-    private function getBaseSpeed(): float
-    {
-        return 12.0;
-    }
-
 }
 
-class NorwegianBlueSpeedStrategy implements SpeedStrategy
+class NorwegianBlueSpeedStrategy extends BaseSpeedStrategy implements SpeedStrategy
 {
     public function getSpeed(int $numberOfCoconuts, float $voltage, bool $isNailed): float
     {
@@ -101,16 +97,21 @@ class NorwegianBlueSpeedStrategy implements SpeedStrategy
     {
         return min(24.0, $voltage * $this->getBaseSpeed());
     }
-    private function getBaseSpeed(): float
-    {
-        return 12.0;
-    }
 }
 
-class EuropeanSpeedStrategy implements SpeedStrategy
+class EuropeanSpeedStrategy extends BaseSpeedStrategy implements SpeedStrategy
 {
     public function getSpeed(int $numberOfCoconuts, float $voltage, bool $isNailed): float
     {
-        return 12.0;
+        return $this->getBaseSpeed();
+    }
+}
+
+class UnknownSpeedStrategy implements  SpeedStrategy
+{
+
+    public function getSpeed(int $numberOfCoconuts, float $voltage, bool $isNailed): float
+    {
+        throw new Exception('Should be unreachable');
     }
 }
